@@ -1,0 +1,131 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>40k Tracker</title>
+    
+    <script type="application/javascript" src="https://unpkg.com/mithril/mithril.js"></script>
+    <script type="application/javascript" src="data.js"></script>
+    
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Grenze+Gotisch&family=Iceland&display=swap"
+          rel="stylesheet">
+  </head>
+  
+  <body>
+    <div id="root">
+    </div>
+    <div id="army">
+      <div id="army-name">
+        Aeldari
+      </div>
+      <div id="army-image">
+        <img src="img/aeldari.png">
+      </div>
+    </div>
+    <div id="victory-points">
+      <p>VP</p>
+      <div id="command-points">
+      </div>
+    </div>
+    <div id="turnList">
+      <div id="test">
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      // class MissionSection extends React.Component {
+      //     render() {
+      //         let missionData = this.props.missionData.map(mission => (
+      //         <li>
+      //           <div className="mission">
+      //               {mission.name}
+      //             <span className="score">{mission.score}</span>
+      //           </div>
+      //         </li>
+      //         ));
+              
+      //         return(
+      //             <ul>
+      //                 {missionData}
+      //             </ul>
+      //         );
+      //     }
+      // };
+
+      // class TurnSection extends React.Component {
+      //     render() {
+      //         let turnData = this.props.turnData.map(turn => (
+      //           <li>
+      //             <div className="turn">
+      //               <p className="turnNumber"> Turn {turn.turnNumber}</p>
+      //               <MissionSection missionData={turn.missions} />
+      //             </div>
+      //           </li>
+      //         ));
+
+      //         return (
+      //         <div className="turnData">
+      //           <ul>
+      //             {turnData}
+      //           </ul>
+      //         </div>
+      //         );
+      //     }
+      // };
+
+      let turnData = [
+          { turnNumber:3, missions: [{ name: "primary", score: 0 },
+                                     { name: "Establish Locus", score: 2 },
+                                     { name: "Storm Hostile Objective", score: 1 }] },
+          { turnNumber:2, missions: [{ name: "primary", score: 2 },
+                                     { name: "m1", score: 4 },
+                                     { name: "m2", score: 6 }] },
+          { turnNumber:1, missions: [{ name: "primary", score: 3 },
+                                     { name: "m1", score: 11 },
+                                     { name: "m2", score: 0 }]
+          },
+      ];
+
+      const missionSelect = (choice) => {
+          return {
+              view: () => [
+                  m('select.missionSelect',
+                    {
+                        onchange: e => choice = e.target.value,
+                        value: choice,
+                        name: 'mission',
+                    },
+                    missionList.map(x => m('option', x))
+                   )
+              ]
+          }
+      }
+
+      const turnMissionSection = (missionData) => {
+          
+          return {
+              view: () => [
+                  missionData.map(mission => (
+                      m('div.mission', [
+                          (mission.name=='primary') ? 'Primary' : m(missionSelect(mission.name)),
+                          m('span.score', mission.score)
+                      ]
+                       )))
+              ]
+          }
+      }
+          
+      const turnListElement = document.getElementById('turnList');
+      const testElement = document.getElementById('test');
+
+      let component = turnMissionSection(turnData[0].missions)
+      
+      m.mount(testElement, component)
+      
+    </script>
+  </body>
+</html>

@@ -31,16 +31,16 @@ body {
 }
 
 .grenze-gotisch-regular {
-  font-family: "Grenze Gotisch", serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
+    font-family: "Grenze Gotisch", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .iceland-regular {
-  font-family: "Iceland", sans-serif;
-  font-weight: 400;
-  font-style: normal;
+    font-family: "Iceland", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .mission select {
@@ -48,7 +48,8 @@ body {
     background-color: transparent;
     border: none;
     margin: 0;
-    width: 80%;
+    padding: 0;
+    width: 92%;
     font-family: inherit;
     font-size: inherit;
     cursor: inherit;
@@ -57,14 +58,17 @@ body {
 }
 
 
-#turn-list {
+#turnList {
     padding: 0 1em;
 }
 
-.turn-number {
+.turnNumber {
     font-size: 20px;
     font-weight: 200;
     text-align: center;
+    color: #ddddaa;
+    margin-top: 20px;
+    margin-bottom: 4px;
 }
 
 .mission {
