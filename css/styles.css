@@ -21,7 +21,7 @@
 body {
     font-family: "Iceland", sans-serif;
     font-weight: 400;
-    font-size: 30px;
+    font-size: 29px;
     background-color: #5f6e77;
     width: 400px;
     border: solid 8px #91925d;
@@ -80,10 +80,21 @@ body {
     border-radius: 5px;
     padding: 1px 8px;
     margin-bottom: 4px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .score {
-    float: right;
+  width: 12%;
+  background: inherit;
+  border: none;
+  color: inherit;
+  font: inherit;
+  text-align: right;
+}
+
+.score:focus {
+    outline: none;
 }
 
 ul {

@@ -109,24 +109,37 @@
           }
       }
 
-      const turnMissionSection = (missionData) => {
+      const turnMissionSection = (vnode) => {
+          let missionData = (vnode.attrs.missions || [
+              { name: 'primary', score: 0 },
+              { name: '', score: 0 },
+              { name: '', score: 0 },
+          ] )
           
           return {
               view: () => [
                   missionData.map(mission => (
                       m('div.mission', [
-                          (mission.name=='primary') ? 'Primary' : m(missionSelect),
-                          m('span.score', mission.score)
+                          (mission.name=='primary') ? 'Primary' : m(missionSelect, {mission:mission}),
+                          m('input.score',
+                            {
+                                onclick: () => { mission.score++ },
+                                oninput: (e) => { mission.score = e.target.value },
+                                value: mission.score,
+                            })
                       ]
                        )))
               ]
           }
       }
+
+      const turnSection = (turnData) => {}
+
           
       const turnListElement = document.getElementById('turnList');
       const testElement = document.getElementById('test');
 
-      let component = turnMissionSection(turnData[0].missions)
+      let component = { view: () => m(turnMissionSection, {missions: turnData[0].missions }) }
       
       m.mount(testElement, component)
       
