@@ -47,7 +47,7 @@
       //           </div>
       //         </li>
       //         ));
-              
+      
       //         return(
       //             <ul>
       //                 {missionData}
@@ -78,64 +78,82 @@
       // };
 
       let turnData = [
-          { turnNumber:3, missions: [{ name: "primary", score: 0 },
-                                     { name: "Establish Locus", score: 2 },
-                                     { name: "Storm Hostile Objective", score: 1 }] },
-          { turnNumber:2, missions: [{ name: "primary", score: 2 },
-                                     { name: "m1", score: 4 },
-                                     { name: "m2", score: 6 }] },
-          { turnNumber:1, missions: [{ name: "primary", score: 3 },
-                                     { name: "m1", score: 11 },
-                                     { name: "m2", score: 0 }]
-          },
+        { turnNumber:3, missions: [{ name: "primary", score: 0 },
+                                   { name: "Establish Locus", score: 2 },
+                                   { name: "Storm Hostile Objective", score: 1 }] },
+        { turnNumber:2, missions: [{ name: "primary", score: 2 },
+                                   { name: "m1", score: 4 },
+                                   { name: "m2", score: 6 }] },
+        { turnNumber:1, missions: [{ name: "primary", score: 3 },
+                                   { name: "m1", score: 11 },
+                                   { name: "m2", score: 0 }]
+        },
       ];
 
       const missionSelect = (vnode) => {
-          console.log(`vnode: ${JSON.stringify(vnode)}`)
-          let choice = (vnode.attrs.mission || {name: ''}).name
-          return {
-              view: () => [
-                  m('select.missionSelect',
-                    {
-                        onchange: e => choice = e.target.value,
-                        value: choice,
-                        name: 'mission',
-                        required: true,
-                    },
-                    m('option', {value:'',disabled: 'true', hidden:'true'}, 'choose mission'),
-                    missionList.map(x => m('option', x)),
-                   )
-              ]
-          }
+        let mission = (vnode.attrs.mission || {name: ''})
+        return {
+          view: () => [
+            m('select.missionSelect',
+              {
+                onchange: e => mission.name = e.target.value,
+                value: mission.name,
+                name: 'mission',
+                required: true,
+              },
+              m('option', {value:'',disabled: 'true', hidden:'true'}, 'choose mission'),
+              missionList.map(x => m('option', x)),
+             )
+          ]
+        }
       }
 
       const turnMissionSection = (vnode) => {
-          let missionData = (vnode.attrs.missions || [
-              { name: 'primary', score: 0 },
-              { name: '', score: 0 },
-              { name: '', score: 0 },
-          ] )
-          
-          return {
-              view: () => [
-                  missionData.map(mission => (
-                      m('div.mission', [
-                          (mission.name=='primary') ? 'Primary' : m(missionSelect, {mission:mission}),
-                          m('input.score',
-                            {
-                                onclick: () => { mission.score++ },
-                                oninput: (e) => { mission.score = e.target.value },
-                                value: mission.score,
-                            })
-                      ]
-                       )))
+        let missionData = (vnode.attrs.missions || [
+          { name: 'primary', score: 0 },
+          { name: '', score: 0 },
+          { name: '', score: 0 },
+        ] )
+        
+        return {
+          view: () => [
+            missionData.map(mission => (
+              m('div.mission', [
+                (mission.name=='primary') ? 'Primary' : m(missionSelect, {mission:mission}),
+                m('input.score',
+                  {
+                    onclick: () => { mission.score++ },
+                    oninput: (e) => { mission.score = e.target.value },
+                    value: mission.score,
+                  })
               ]
-          }
+               )))
+          ]
+        }
       }
 
-      const turnSection = (turnData) => {}
+      const turnSection = (vnode) => {
+        let turnData = (vnode.attrs.turns || [
+          { turnNumber:1, missions: [{ name: 'primary', score: 0 },
+                                     { name: '', score: 0 },
+                                     { name: '', score: 0 }]
+          }
+        ])
+        
+        return {
+          view: () => [
+            m('ul',
+              [
+                turnData.map(turn => (
+                  
+                ))
+              ]
+             )
+          ]
+        }
+      }
 
-          
+      
       const turnListElement = document.getElementById('turnList');
       const testElement = document.getElementById('test');
 
