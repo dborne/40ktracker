@@ -56,7 +56,10 @@ body {
     line-height: inherit;
     color: inherit;
 }
-
+.mission select:invalid {
+    color:#5d5d4e;
+    font-size: smaller;
+}
 
 #turnList {
     padding: 0 1em;

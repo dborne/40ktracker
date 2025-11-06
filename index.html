@@ -35,7 +35,7 @@
       <div id="test">
       </div>
     </div>
-
+    
     <script type="text/javascript">
       // class MissionSection extends React.Component {
       //     render() {
@@ -90,7 +90,9 @@
           },
       ];
 
-      const missionSelect = (choice) => {
+      const missionSelect = (vnode) => {
+          console.log(`vnode: ${JSON.stringify(vnode)}`)
+          let choice = (vnode.attrs.mission || {name: ''}).name
           return {
               view: () => [
                   m('select.missionSelect',
@@ -98,8 +100,10 @@
                         onchange: e => choice = e.target.value,
                         value: choice,
                         name: 'mission',
+                        required: true,
                     },
-                    missionList.map(x => m('option', x))
+                    m('option', {value:'',disabled: 'true', hidden:'true'}, 'choose mission'),
+                    missionList.map(x => m('option', x)),
                    )
               ]
           }
@@ -111,7 +115,7 @@
               view: () => [
                   missionData.map(mission => (
                       m('div.mission', [
-                          (mission.name=='primary') ? 'Primary' : m(missionSelect(mission.name)),
+                          (mission.name=='primary') ? 'Primary' : m(missionSelect),
                           m('span.score', mission.score)
                       ]
                        )))
