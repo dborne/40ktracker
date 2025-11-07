@@ -16,10 +16,8 @@
   </head>
   
   <body>
-    <div id="root">
-    </div>
     <div id="army">
-      <div id="army-name">
+      <div id="armyName">
         Aeldari
       </div>
       <div id="army-image">
@@ -32,64 +30,68 @@
       </div>
     </div>
     <div id="turnList">
-      <div id="test">
-      </div>
     </div>
     
     <script type="text/javascript">
-      // class MissionSection extends React.Component {
-      //     render() {
-      //         let missionData = this.props.missionData.map(mission => (
-      //         <li>
-      //           <div className="mission">
-      //               {mission.name}
-      //             <span className="score">{mission.score}</span>
-      //           </div>
-      //         </li>
-      //         ));
-      
-      //         return(
-      //             <ul>
-      //                 {missionData}
-      //             </ul>
-      //         );
-      //     }
-      // };
-
-      // class TurnSection extends React.Component {
-      //     render() {
-      //         let turnData = this.props.turnData.map(turn => (
-      //           <li>
-      //             <div className="turn">
-      //               <p className="turnNumber"> Turn {turn.turnNumber}</p>
-      //               <MissionSection missionData={turn.missions} />
-      //             </div>
-      //           </li>
-      //         ));
-
-      //         return (
-      //         <div className="turnData">
-      //           <ul>
-      //             {turnData}
-      //           </ul>
-      //         </div>
-      //         );
-      //     }
-      // };
 
       let turnData = [
-        { turnNumber:3, missions: [{ name: "primary", score: 0 },
-                                   { name: "Establish Locus", score: 2 },
-                                   { name: "Storm Hostile Objective", score: 1 }] },
-        { turnNumber:2, missions: [{ name: "primary", score: 2 },
-                                   { name: "m1", score: 4 },
-                                   { name: "m2", score: 6 }] },
-        { turnNumber:1, missions: [{ name: "primary", score: 3 },
-                                   { name: "m1", score: 11 },
-                                   { name: "m2", score: 0 }]
+        { turnNumber:4, missions: [{ name: 'primary', score: 2 },
+                                   { name: 'Establish Locus', score: 3 },
+                                   { name: 'Storm Hostile Objective', score: 4 }] },
+        { turnNumber:3, missions: [{ name: 'primary', score: 0 },
+                                   { name: 'Establish Locus', score: 2 },
+                                   { name: 'Storm Hostile Objective', score: 1 }] },
+        { turnNumber:2, missions: [{ name: 'primary', score: 2 },
+                                   { name: 'Establish Locus', score: 4 },
+                                   { name: 'Storm Hostile Objective', score: 6 }] },
+        { turnNumber:1, missions: [{ name: 'primary', score: 3 },
+                                   { name: 'Establish Locus', score: 0 },
+                                   { name: 'Storm Hostile Objective', score: 11 }]
         },
       ];
 
+      // pull out every mission from every turn, flatten the list, extract the scores, and sum them all up
+      const calcVP = (turnData)=>turnData.map((t)=>t.missions).flat().map((m)=>m.score).reduce((a,c)=>a+c)
+
+      const armySelect = (vnode) => {
+        let army = (vnode.attrs.army || {name: ''})
+        return {
+          view: () => [
+            m('select.armySelect',
+              {
+                onchange: e => army.name = e.target.value,
+                value: army.name,
+                name: 'army',
+                required: true,
+              },
+              m('option', {value:'',disabled: 'true', hidden:'true'}, 'choose your army'),
+              armyList.map(x => m('option', x)),
+             )
+          ]
+        }
+      }
+
+      const armySection = (vnode) => {
+        let army = (vnode.attrs.army || {name: ''})
+        return {
+          view: () => [
+            m('div#armyName',[
+              m(armySelect, {army:army})
+            ]),
+            m('div#armyImage', [
+              m('img', {src: `img/${(army.name || 'no-army' ).toLowerCase()}.png`})
+            ])
+            // <div id="armyName">
+            //   Aeldari
+            // </div>
+            // <div id="army-image">
+            //   <img src="img/aeldari.png">
+            // </div>
+            
+          ]
+        }
+      }
+      
       const missionSelect = (vnode) => {
         let mission = (vnode.attrs.mission || {name: ''})
         return {
@@ -142,12 +144,13 @@
         
         return {
           view: () => [
-            m('ul',
-              [
-                turnData.map(turn => (
-                  
-                ))
-              ]
+            turnData.map(turn => (
+              m('div.turn',
+                [
+                  m('p.turnNumber', `Turn ${turn.turnNumber}`),
+                  m(turnMissionSection, {missions: turn.missions})
+                ]
+               ))
              )
           ]
         }
@@ -156,10 +159,16 @@
       
       const turnListElement = document.getElementById('turnList');
       const testElement = document.getElementById('test');
+      const armyElement = document.getElementById('army');
 
-      let component = { view: () => m(turnMissionSection, {missions: turnData[0].missions }) }
+      let armyData = {name:''}
+
+      m.mount(armyElement, { view: () => m(armySection, { army: armyData }) })
+
+      let component = { view: () => m(turnSection, { turns: turnData }) }
+      //let component = { view: () => m(turnSection) }
       
-      m.mount(testElement, component)
+      m.mount(turnListElement, component)
       
     </script>
   </body>
