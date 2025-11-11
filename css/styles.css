@@ -77,6 +77,17 @@ select.missionSelect {
     font-size: smaller;
 }
 
+.mission button {
+  border: inherit;
+  background-color: inherit;
+  color: #997;
+  font: inherit;
+  font-size: smaller;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  width: 100%;
+}
 #turnList {
     padding: 0 1em;
     display: flex;
@@ -86,7 +97,7 @@ select.missionSelect {
 
 .turn {
     width: 48%;
-    font-size:47%;
+    font-size:46%;
     margin: 0;
 }
 
