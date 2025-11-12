@@ -29,7 +29,11 @@
       <div id="command-points">
       </div>
     </div>
+    <div id="test">
+    </div>
     <div id="turnList">
+    </div>
+    <div id="modal">
     </div>
     
     <script type="text/javascript">
@@ -166,6 +170,41 @@
           ]
         }
       }
+
+      const modal = (content) => {
+        const modalContainer = document.createElement('div');
+        document.body.appendChild(modalContainer);
+        m.render(modalContainer, view)
+      }
+
+      const modalContent =
+            m('.title.has-text-centered', 'Title',
+              m('.subtitle', 'some content here'))
+
+      const modalElement = document.getElementById('modal');
+      const modalThingy = () => {
+        return {
+          view: () => [
+            m('.modal is-active',
+              m('.modal-background', { onclick: () => m.mount(modalElement, null) }),
+              m('.modal-content', m('.box', modalContent)))
+          ]
+        }
+      }
+      const app = () => {
+        return {
+          view: () => m('.section',
+                        m('button.button.subtitle', { onclick: () => m.mount(modalElement, modalThingy) },
+                          'Show Modal'))
+        }
+      }
+      
+      const newTurn = (vnode) => {
+        console.log(JSON.stringify(vnode))
+        return {
+          view: () => m('p.turnNumber', {onclick: () => alert('foo')}, vnode.children)
+        }
+      }
       
       const turnSection = (vnode) => {
         let view
@@ -180,10 +219,12 @@
         
         return {
           view: () => [
-            turnData.map(turn => (
+            turnData.map((turn, index) => (
               m('div.turn',
                 [
-                  m('p.turnNumber', `Turn ${turn.turnNumber}`),
+                  (index > 0) ?
+                    m('p.turnNumber', `Turn ${turn.turnNumber}`) :
+                    m(newTurn, `Turn ${turn.turnNumber}`),
                   m(turnMissionSection, {missions: turn.missions})
                 ]
                ))
@@ -194,7 +235,6 @@
 
       
       const turnListElement = document.getElementById('turnList');
-      const testElement = document.getElementById('test');
       const armyElement = document.getElementById('army');
 
       let armyData = {name:''}
@@ -206,6 +246,9 @@
 
       shuffleArray(missionList)
       m.mount(turnListElement, component)
+      
+      const testElement = document.getElementById('test');
+      m.mount(testElement, app)
       
     </script>
   </body>
